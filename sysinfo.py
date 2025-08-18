@@ -9,7 +9,7 @@ import time
 import threading
 import argparse
 
-VERSION = "1.0.2"  # your current version
+VERSION = "1.0.1"  # your current version
 
 bold = "\033[1m"
 bold_white = "\033[1;37m"
