@@ -2,7 +2,7 @@
 
 A simple, cross-platform Python CLI tool to display essential system information such as:
 
-- **Operating System** (macOS, Linux)
+- **Operating System** (macOS, ubuntu, debian, fedora, RHEL, CentOS, Linux)
 - **Architecture** (x86_64, arm64, etc.)
 - **Kernel version**
 - **Hostname and current user**
