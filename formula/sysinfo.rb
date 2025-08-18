@@ -12,6 +12,6 @@ class Sysinfo < Formula
   end
 
   test do
-    assert_match(/System Info/, shell_output("#{bin}/sysinfo"))
+    assert_match "System Info", shell_output("#{bin}/sysinfo")
   end
 end
