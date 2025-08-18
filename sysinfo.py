@@ -23,6 +23,13 @@ def spinner():
         i += 1
         time.sleep(0.1)
 
+# --- Run safe command ---
+def run_cmd(cmd):
+    try:
+        return subprocess.getoutput(cmd).strip()
+    except Exception:
+        return "Unknown"
+
 # --- Utility Functions ---
 def get_resolution():
     system = platform.system()
@@ -113,7 +120,7 @@ def get_macos_info():
     print(f"{bold}Architecture:{reset} {arch}")
     print(f"{bold}Kernel Version:{reset} {kernel}")
     print(f"{bold}GPU:{reset} {gpu_name}")
-    print(f"{bold}PhysMem:{reset} {mem}")
+    print(f"{bold}Memory:{reset} {mem}")
     print(f"{bold}Resolution:{reset} {resolution}")
     print(f"{bold}Uptime:{reset} {uptime}")
     print(f"{bold}Host:{reset} {host}")
@@ -127,19 +134,24 @@ def get_macos_info():
     print(f"{bold_white}Cargo Version:{reset} {cargo_ver}")
     print(f"{bold_white}Homebrew Version:{reset} {brew_ver}\n")
 
-# --- Linux Info ---
+
+# --- Detect Linux Distro ---
 def get_linux_distro():
-    try:
-        os_release = subprocess.getoutput("cat /etc/os-release")
-        for line in os_release.splitlines():
-            if line.startswith("ID="):
-                return line.split("=")[1].strip().replace('"', '')
-    except:
+    os_release = run_cmd("cat /etc/os-release").lower()
+    if "ubuntu" in os_release:
+        return "ubuntu"
+    elif "debian" in os_release:
+        return "debian"
+    elif "fedora" in os_release:
+        return "fedora"
+    elif "centos" in os_release:
+        return "centos"
+    elif "red hat" in os_release:
+        return "rhel"
+    else:
         return "linux"
-    return "linux"
 
 def print_linux_banner(distro):
-    def print_linux_banner(distro):
         banners = {
             "ubuntu": f"""{bold}
 
@@ -208,8 +220,30 @@ def get_linux_info():
     t = threading.Thread(target=spinner)
     t.start()
 
-    os_release = subprocess.getoutput("cat /etc/os-release")
-    cpu = subprocess.getoutput("lscpu 2>/dev/null") or "Unknown"
+     # OS Info
+    os_info = {}
+    with open("/etc/os-release") as f:
+         for line in f:
+             if "=" in line:
+                 k, v = line.strip().split("=", 1)
+                 os_info[k] = v.strip('"')
+    product_name = os_info.get("NAME", "Unknown")
+    version = os_info.get("VERSION", "")
+    codename = os_info.get("VERSION_CODENAME", "")
+    os_id = os_info.get("ID", "")
+    os_like = os_info.get("ID_LIKE", "")
+
+    # CPU Info
+    cpu_info = {}
+    for line in run_cmd("lscpu").splitlines():
+        if ":" in line:
+            key, val = line.split(":", 1)
+            cpu_info[key.strip()] = val.strip()
+    model = cpu_info.get("Model name", "Unknown")
+    cores = cpu_info.get("CPU(s)", "Unknown")
+    arch = cpu_info.get("Architecture", platform.machine())
+
+    # Other Info
     gpu = subprocess.getoutput("lspci | grep -i vga") or (subprocess.getoutput("glxinfo -B | grep 'Device:'") if shutil.which("glxinfo") else "Unknown")
     mem = subprocess.getoutput("free -h") or "Unknown"
     uptime = subprocess.getoutput("uptime")
@@ -231,24 +265,28 @@ def get_linux_info():
     t.join()
     sys.stdout.write("\r" + " " * 60 + "\r")  # clear line
 
-    print(f"{bold}OS Info:{reset}\n{os_release}")
-    print(f"{bold}Host:{reset} {host}")
-    print(f"{bold}Host Model:{reset} {host_model}")
-    print(f"{bold}CPU:{reset}\n{cpu}")
+    print(f"{bold}Product Name:{reset} {product_name}")
+    if version: print(f"{bold}Product Version:{reset} {version}")
+    if codename: print(f"{bold}Codename:{reset} {codename}")
+    print(f"{bold}ID:{reset} {os_id} ({os_like})")
+    print(f"{bold}CPU:{reset} {model} ({cores} cores)")
     print(f"{bold}Architecture:{reset} {arch}")
     print(f"{bold}Kernel Version:{reset} {kernel}")
-    print(f"{bold}GPU:{reset}\n{gpu}")
-    print(f"{bold}Memory:{reset}\n{mem}")
+    print(f"{bold}GPU:{reset} {gpu}")
     print(f"{bold}Resolution:{reset} {resolution}")
     print(f"{bold}Uptime:{reset} {uptime}")
+    print(f"{bold}Host:{reset} {host}")
+    print(f"{bold}Host Model:{reset} {host_model}")
     print(f"{bold}Current User:{reset} {user}")
     print(f"{bold}Terminal:{reset} {terminal}")
-    print(f"{bold}Ruby Version:{reset} {ruby_ver}")
-    print(f"{bold}Python Version:{reset} {python_ver}")
-    print(f"{bold}Swift Version:{reset} {swift_ver}")
+    print(f"{bold_white}Ruby Version:{reset} {ruby_ver}")
+    print(f"{bold_white}Python Version:{reset} {python_ver}")
+    print(f"{bold_white}Swift Version:{reset} {swift_ver}")
     print(f"{bold_white}Rust Version:{reset} {rust_ver}")
     print(f"{bold_white}Cargo Version:{reset} {cargo_ver}")
     print(f"{bold_white}Homebrew Version:{reset} {brew_ver}\n")
+    print(f"{bold}Memory:{reset}\n{mem}")
+
 
 # --- Main ---
 def main():
