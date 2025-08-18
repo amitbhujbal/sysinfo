@@ -2,12 +2,12 @@
 
 A simple, cross-platform Python CLI tool to display essential system information such as:
 
-- **Operating System** (macOS, Linux, Windows)
+- **Operating System** (macOS, ubuntu, debian, fedora, RHEL, CentOS, Linux)
 - **Architecture** (x86_64, arm64, etc.)
 - **Kernel version**
 - **Hostname and current user**
 - **Memory usage**
-- **Programming languages installed** (Python, Ruby, Swift)
+- **Programming languages installed** (Python, Ruby, Swift, Rust, Cargo, Homebrew)
 
 It’s lightweight, easy to install, and works right from your terminal.
 
