@@ -1,1 +1,45 @@
-# sysinfo
+# 📦 sysinfo
+
+A simple, cross-platform Python CLI tool to display essential system information such as:
+
+- **Operating System** (macOS, Linux, Windows)
+- **Architecture** (x86_64, arm64, etc.)
+- **Kernel version**
+- **Hostname and current user**
+- **Memory usage**
+- **Programming languages installed** (Python, Ruby, Swift)
+
+It’s lightweight, easy to install, and works right from your terminal.
+
+---
+
+## 🚀 Installation
+
+### Homebrew (macOS/Linux)
+
+If you use [Homebrew](https://brew.sh/), simply run:
+
+```bash
+brew install sysinfo
+```
+
+Then run:
+
+```bash
+sysinfo
+```
+
+---
+
+## 📸 Screenshots
+
+![Screenshots.](https://amitbhujbal.com/github/screenshot-sysinfo.png "Screenshots")
+
+
+
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE) © 2025 **Amit Bhujbal**.
