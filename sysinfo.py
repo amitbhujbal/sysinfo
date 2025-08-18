@@ -7,6 +7,9 @@ import shutil
 import sys
 import time
 import threading
+import argparse
+
+VERSION = "1.0.1"  # your current version
 
 bold = "\033[1m"
 bold_white = "\033[1;37m"
@@ -290,6 +293,24 @@ def get_linux_info():
 
 # --- Main ---
 def main():
+
+    parser = argparse.ArgumentParser(
+        description="Sysinfo: Display detailed system information (macOS/Linux).",
+        formatter_class=argparse.RawTextHelpFormatter,
+        epilog="""Examples:
+  sysinfo                     # Show full system information
+  sysinfo -v / --version       # Show sysinfo version
+  sysinfo -h                   # Show this help message
+  """
+    )
+
+    parser.add_argument("-v", "--version", action="store_true", help="Show sysinfo version and exit")
+    args = parser.parse_args()
+
+    if args.version:
+        print(f"sysinfo version {VERSION}")
+        return
+
     system = platform.system()
     if system == "Darwin":
         get_macos_info()
