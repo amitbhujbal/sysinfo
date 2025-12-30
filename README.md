@@ -34,7 +34,7 @@ sysinfo
 
 ## 📸 Screenshots
 
-![Screenshots.](https://amitbhujbal.com/github/screenshot-sysinfo.png "Screenshots")
+![Screenshots.](https://amitbhujbal.com/images/screenshot-sysinfo.png "Screenshots")
 
 
 
