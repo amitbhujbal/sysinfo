@@ -34,15 +34,9 @@ sysinfo
 ---
 
 ## 📸 Screenshots
-
-
-### macOS ![Screenshots.](https://amitbhujbal.com/images/screenshot-sysinfomac.webp "Screenshots")
-
-### Linux ![Screenshots.](https://amitbhujbal.com/images/screenshot-sysinfolinux.webp "Screenshots")
-
+![Screenshots.](https://amitbhujbal.com/images/screenshot-sysinfo.webp "Screenshots")
 
 ---
-
 
 ## ⚠️ Troubleshooting
 
