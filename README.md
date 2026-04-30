@@ -34,7 +34,7 @@ sysinfo
 
 ## 📸 Screenshots
 
-![Screenshots.](https://amitbhujbal.com/images/screenshot-sysinfo.webp "Screenshots")
+![Screenshots.](https://amitbhujbal.com/images/screenshot-sysinfomac.webp "Screenshots")
 
 
 
@@ -43,4 +43,4 @@ sysinfo
 
 ## 📄 License
 
-This project is licensed under the [MIT License](LICENSE) © 2025 **Amit Bhujbal**.
+This project is licensed under the [MIT License](LICENSE) © 2026 **Amit Bhujbal**.
