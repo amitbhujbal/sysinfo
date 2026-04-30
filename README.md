@@ -1,6 +1,6 @@
 # 📦 sysinfo
 
-A simple, cross-platform Python CLI tool to display essential system information such as:
+A simple, cross-platform Python CLI tool to display essential system information directly from your terminal.
 
 - **Operating System** (macOS, ubuntu, debian, fedora, RHEL, CentOS, Linux)
 - **Architecture** (x86_64, arm64, etc.)
@@ -8,6 +8,7 @@ A simple, cross-platform Python CLI tool to display essential system information
 - **Hostname and current user**
 - **Memory usage**
 - **Programming languages installed** (Python, Ruby, Swift, Rust, Cargo, Homebrew)
+- **Programming languages installed** (Git, Curl, OpenSSL / LibreSSL (SSH), Node, Bash, Zsh, Tar, Zip / Unzip)
 
 It’s lightweight, easy to install, and works right from your terminal.
 
@@ -34,9 +35,10 @@ sysinfo
 
 ## 📸 Screenshots
 
-![Screenshots.](https://amitbhujbal.com/images/screenshot-sysinfomac.webp "Screenshots")
 
+### macOS ![Screenshots.](https://amitbhujbal.com/images/screenshot-sysinfomac.webp "Screenshots")
 
+### Linux ![Screenshots.](https://amitbhujbal.com/images/screenshot-sysinfolinux.webp "Screenshots")
 
 
 ---
