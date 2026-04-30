@@ -43,6 +43,21 @@ sysinfo
 
 ---
 
+
+## ⚠️ Troubleshooting
+
+### Checksum mismatch
+Update SHA to match release.
+
+### Old version installs
+brew uninstall sysinfo
+brew untap amitbhujbal/sysinfo
+brew tap amitbhujbal/sysinfo
+brew install amitbhujbal/sysinfo/sysinfo
+
+---
+
+
 ## 📄 License
 
 This project is licensed under the [MIT License](LICENSE) © 2026 **Amit Bhujbal**.
