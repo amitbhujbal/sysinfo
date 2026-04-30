@@ -46,14 +46,23 @@ sysinfo
 
 ## ⚠️ Troubleshooting
 
-### Checksum mismatch
+### ❌ Checksum mismatch
+
 Update SHA to match release.
 
-### Old version installs
+---
+### ❌ Old version installs
+```
+already installed and up-to-date
+```
+
+**Fix:**
+```bash
 brew uninstall sysinfo
 brew untap amitbhujbal/sysinfo
 brew tap amitbhujbal/sysinfo
-brew install amitbhujbal/sysinfo/sysinfo
+brew install sysinfo
+```
 
 ---
 
