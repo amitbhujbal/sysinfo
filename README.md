@@ -34,7 +34,7 @@ sysinfo
 ---
 
 ## 📸 Screenshots
-![Screenshots.](https://amitbhujbal.com/images/screenshot-sysinfo.webp "Screenshots")
+![Screenshots.](https://amitbhujbal.com/images/screenshot-sysinfoz.webp "Screenshots")
 
 ---
 
