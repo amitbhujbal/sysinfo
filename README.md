@@ -40,12 +40,12 @@ sysinfo
 
 ## ⚠️ Troubleshooting
 
-### ❌ Checksum mismatch
+### Checksum mismatch
 
 Update SHA to match release.
 
 ---
-### ❌ Old version installs
+### Old version installs
 ```
 already installed and up-to-date
 ```
