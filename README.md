@@ -25,6 +25,20 @@ brew tap amitbhujbal/sysinfo
 brew install sysinfo
 ```
 
+> **Homebrew 6+**
+>
+> If Homebrew asks you to trust the tap, run:
+>
+> ```bash
+> brew trust amitbhujbal/sysinfo
+> ```
+>
+> Then install again:
+>
+> ```bash
+> brew install sysinfo
+> ```
+
 Then run:
 
 ```bash
