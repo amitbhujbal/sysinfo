@@ -125,6 +125,20 @@ def clean_version(output: str) -> str:
 
     return "unknown"
 
+def get_macos_memory() -> str:
+    """Return actual physical RAM installed on macOS."""
+    try:
+        mem_bytes = subprocess.getoutput("sysctl -n hw.memsize").strip()
+
+        if mem_bytes.isdigit():
+            total_bytes = int(mem_bytes)
+            total_gb = total_bytes / (1024 ** 3)
+            return f"{round(total_gb)} GB"
+
+        return "Unknown"
+    except (ValueError, OSError):
+        return "Unknown"
+
 def parse_mem_linux():
     """
     Returns memory as human-readable total GB string, e.g., '8 GB', '16 GB'
@@ -299,7 +313,7 @@ def get_macos_info():
     cpu = subprocess.getoutput("sysctl -n machdep.cpu.brand_string")
     gpu = subprocess.getoutput("system_profiler SPDisplaysDataType | grep 'Chipset Model' | head -n 1")
     gpu_name = gpu.replace("Chipset Model:", "").strip()
-    mem = subprocess.getoutput("top -l 1 | grep PhysMem")
+    mem_clean = get_macos_memory()
     uptime = subprocess.getoutput("uptime")
     arch = platform.machine()
     kernel = platform.release()
@@ -331,7 +345,6 @@ def get_macos_info():
     _ = sys.stdout.write("\r" + " " * 60 + "\r")  # clear line
 
     # Clean all versions
-    mem_clean = parse_memory(mem)
     resolution = resolution.replace("Resolution:", "").strip()
     uptime_clean = parse_uptime(uptime)
     ruby_ver = clean_version(ruby_ver)
