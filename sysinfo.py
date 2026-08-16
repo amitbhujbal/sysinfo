@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-import platform
-import os
-import subprocess
-import getpass
-import shutil
-import sys
-import time
-import threading
 import argparse
+import getpass
+import os
+import platform
 import re
+import shutil
+import subprocess
+import sys
+import threading
+import time
 
-VERSION = "1.1"  # your current version
+VERSION = "1.1.1"  # your current version
 
 reset = "\033[0m"
 bold_white = "\033[1;37m"
@@ -45,7 +45,7 @@ def spinner():
 def run_cmd(cmd: str) -> str:
     try:
         return subprocess.getoutput(cmd).strip()
-    except Exception:
+    except OSError:
         return "Unknown"
 
 # --- Utility Functions ---
@@ -143,17 +143,18 @@ def parse_mem_linux():
     """
     Returns memory as human-readable total GB string, e.g., '8 GB', '16 GB'
     """
-    mem_output = run_cmd("free -b")  # get in bytes
+    mem_output = run_cmd("free -b")
     for line in mem_output.splitlines():
         if line.lower().startswith("mem:"):
             parts = line.split()
             total_bytes = int(parts[1])
             total_gb = total_bytes / (1024**3)
-            # round to nearest integer for clean display
+
             if total_gb >= 1:
-                return f"{int(round(total_gb))} GB"
+                return f"{round(total_gb)} GB"
             else:
                 return f"{int(total_bytes / (1024**2))} MB"
+
     return "Unknown"
 
 def parse_uptime_linux() -> str:
