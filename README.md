@@ -1,14 +1,14 @@
 # 📦 sysinfo
 
-A simple, cross-platform Python CLI tool to display essential system information directly from your terminal.
+A simple, cross-platform Python CLI tool for displaying essential system information directly in your terminal.
 
-- **Operating System** (macOS, ubuntu, debian, fedora, RHEL, CentOS, Linux)
-- **Architecture** (x86_64, arm64, etc.)
+- **Operating System** — macOS, Ubuntu, Debian, Fedora, RHEL, CentOS, Linux
+- **Architecture** — x86_64, arm64, etc.
 - **Kernel version**
 - **Hostname and current user**
 - **Memory usage**
-- **Programming languages installed** (Python, Ruby, Swift, Rust, Cargo, Homebrew)
-- **Programming languages installed** (Git, Curl, OpenSSL / LibreSSL (SSH), Node, Bash, Zsh, Tar, Zip / Unzip)
+- **Development tools and languages** — Python, Ruby, Swift, Rust, Cargo, Homebrew
+- **System utilities** — Git, curl, OpenSSL / LibreSSL (SSH), Node, Bash, Zsh, Tar, Zip / Unzip
 
 It’s lightweight, easy to install, and works right from your terminal.
 
@@ -39,7 +39,7 @@ brew install sysinfo
 > brew install sysinfo
 > ```
 
-Then run:
+Once installed, run:
 
 ```bash
 sysinfo
@@ -48,7 +48,7 @@ sysinfo
 ---
 
 ## 📸 Screenshots
-![Screenshots.](https://amitbhujbal.com/images/screenshot-sysinfo.avif "Screenshots")
+![Screenshots.](https://amitbhujbal.com/images/screenshot-sysinfo.png "Screenshots")
 
 ---
 
@@ -56,15 +56,18 @@ sysinfo
 
 ### Checksum mismatch
 
-Update SHA to match release.
+If you encounter a checksum mismatch, update the SHA256 checksum in the Homebrew formula to match the current release.
 
 ---
-### Old version installs
+### Old version is installed
+
+If Homebrew reports:
+
 ```
 already installed and up-to-date
 ```
+but you are still using an older version, reinstall the tap:
 
-**Fix:**
 ```bash
 brew uninstall sysinfo
 brew untap amitbhujbal/sysinfo
@@ -73,7 +76,6 @@ brew install sysinfo
 ```
 
 ---
-
 
 ## 📄 License
 
