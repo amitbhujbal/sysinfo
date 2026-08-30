@@ -1,4 +1,4 @@
-# 📦 sysinfo
+# sysinfo
 
 A simple, cross-platform Python CLI tool for displaying essential system information directly in your terminal.
 
@@ -14,7 +14,7 @@ It’s lightweight, easy to install, and works right from your terminal.
 
 ---
 
-## 🚀 Installation
+## Installation
 
 ### Homebrew (macOS/Linux)
 
@@ -33,12 +33,12 @@ sysinfo
 
 ---
 
-## 📸 Screenshots
+## Screenshots
 ![Screenshots.](https://amitbhujbal.com/images/screenshot-sysinfo.png "Screenshots")
 
 ---
 
-## ⚠️ Troubleshooting
+## Troubleshooting
 
 ### Checksum mismatch
 
