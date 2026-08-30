@@ -21,24 +21,10 @@ It’s lightweight, easy to install, and works right from your terminal.
 If you use [Homebrew](https://brew.sh/), simply run:
 
 ```bash
+brew trust amitbhujbal/sysinfo
 brew tap amitbhujbal/sysinfo
 brew install sysinfo
 ```
-
-> **Homebrew 6+**
->
-> If Homebrew asks you to trust the tap, run:
->
-> ```bash
-> brew trust amitbhujbal/sysinfo
-> ```
->
-> Then install again:
->
-> ```bash
-> brew install sysinfo
-> ```
-
 Once installed, run:
 
 ```bash
