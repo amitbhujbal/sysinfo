@@ -10,7 +10,7 @@ import sys
 import threading
 import time
 
-VERSION = "1.1.1"  # your current version
+VERSION = "1.1.2"  # your current version
 
 reset = "\033[0m"
 bold_white = "\033[1;37m"
@@ -98,17 +98,75 @@ def parse_memory(mem_str: str) -> str:
         return f"{total_gb} GB"
     return "Unknown"
 
+
+
+def get_macos_uptime() -> str:
+    """Return macOS uptime using the kernel boot time."""
+    try:
+        boot_time = subprocess.getoutput("sysctl -n kern.boottime").strip()
+
+        # Example:
+        # { sec = 1756543210, usec = 123456 }
+        match = re.search(r"sec\s*=\s*(\d+)", boot_time)
+
+        if not match:
+            return "Unknown"
+
+        boot_timestamp = int(match.group(1))
+        uptime_seconds = max(0, int(time.time()) - boot_timestamp)
+
+        days, remainder = divmod(uptime_seconds, 86400)
+        hours, remainder = divmod(remainder, 3600)
+        minutes, _ = divmod(remainder, 60)
+
+        parts: list[str] = []
+
+        if days:
+            parts.append(f"{days}d")
+
+        if hours:
+            parts.append(f"{hours}h")
+
+        if minutes or not parts:
+            parts.append(f"{minutes}m")
+
+        return " ".join(parts)
+
+    except (ValueError, OSError):
+        return "Unknown"
+
 def parse_uptime(uptime_str: str) -> str:
-    # Example: "20:33  up  2:53, 2 users, load averages: 2.17 2.76 2.87"
-    m = re.search(r"up\s+([0-9]+):([0-9]+)", uptime_str)
+    if not uptime_str:
+        return "Unknown"
+
+    # macOS format:
+    # "09:35  up 3 days, 4:21, 2 users, load averages: ..."
+    m = re.search(
+        r"\bup\s+(?:(\d+)\s+days?,\s*)?(\d+):(\d+)",
+        uptime_str,
+        re.IGNORECASE
+    )
+
     if m:
-        hours, mins = m.groups()
+        days = m.group(1)
+        hours = m.group(2)
+        mins = m.group(3)
+
+        if days:
+            return f"{days}d {hours}h {mins}m"
+
         return f"{hours}h {mins}m"
+
     return "Unknown"
 
 def clean_version(output: str) -> str:
     if not output:
         return "unknown"
+
+    # Zip: match actual Zip version
+    m = re.search(r"This is Zip\s+(\d+(?:\.\d+)+)", output, re.IGNORECASE)
+    if m:
+        return m.group(1)
 
     # Match first "digit.digit(.digit)*"
     m = re.search(r"\d+(?:\.\d+)+", output)
@@ -244,17 +302,38 @@ def clean_python_version(output: str) -> str:
     m = re.search(r"Python\s+(\d+(?:\.\d+)*)", output)
     return m.group(1) if m else "Unknown"
 
+
 def clean_swift_version(output: str) -> str:
     if not output:
         return "Not Installed"
-    m = re.search(r"Swift\s+version\s+(\d+(?:\.\d+)*)", output, re.IGNORECASE)
-    return m.group(1) if m else "Unknown"
+
+    # macOS:
+    # swift-driver version: 1.87.3 Apple Swift version 5.9.2
+    m = re.search(
+        r"Apple Swift version\s+(\d+(?:\.\d+)+)",
+        output,
+        re.IGNORECASE
+    )
+    if m:
+        return m.group(1)
+
+    # Linux:
+    # Swift version 6.3.3 (swift-6.3.3-RELEASE)
+    m = re.search(
+        r"\bSwift version\s+(\d+(?:\.\d+)+)",
+        output,
+        re.IGNORECASE
+    )
+    if m:
+        return m.group(1)
+
+    return "Unknown"
 
 def clean_rust_version(output: str) -> str:
     if not output:
         return "Not Installed"
-    # rustup 1.28.2 (...)
-    m = re.search(r"rustup\s+(\d+(?:\.\d+)*)", output, re.IGNORECASE)
+    # rustc 1.28.2 (...)
+    m = re.search(r"rustc\s+(\d+(?:\.\d+)*)", output, re.IGNORECASE)
     return m.group(1) if m else "Unknown"
 
 def clean_cargo_version(output: str) -> str:
@@ -273,15 +352,9 @@ def clean_zsh_version(output: str) -> str:
 def clean_zip_version(output: str) -> str:
     if not output:
         return "Not Installed"
-    # Try to find Zip version first
-    m = re.search(r"Zip\s+(\d+(?:\.\d+)*)", output, re.IGNORECASE)
-    if m:
-        return m.group(1)
-    # Fallback: year range like 1990-2008
-    m_year = re.search(r"\b\d{4}-\d{4}\b", output)
-    if m_year:
-        return m_year.group(0)
-    return "Unknown"
+
+    m = re.search(r"This is Zip\s+(\d+(?:\.\d+)*)", output, re.IGNORECASE)
+    return m.group(1) if m else "Unknown"
 
 def clean_node_version(output: str) -> str:
     if not output:
@@ -315,7 +388,7 @@ def get_macos_info():
     gpu = subprocess.getoutput("system_profiler SPDisplaysDataType | grep 'Chipset Model' | head -n 1")
     gpu_name = gpu.replace("Chipset Model:", "").strip()
     mem_clean = get_macos_memory()
-    uptime = subprocess.getoutput("uptime")
+    uptime_clean = get_macos_uptime()
     arch = platform.machine()
     kernel = platform.release()
     resolution = get_resolution()
@@ -326,7 +399,7 @@ def get_macos_info():
     ruby_ver = get_version("ruby")
     python_ver = get_version("python3")
     swift_ver = get_version("swift")
-    rust_ver = get_version("rustup")
+    rust_ver = get_version("rustc")
     cargo_ver = get_version("cargo")
     brew_ver = get_version("brew")
     git_ver = get_version("git")
@@ -338,7 +411,8 @@ def get_macos_info():
     zsh_ver = get_version("zsh")
     tar_ver = get_version("tar")
     unzip_ver = get_version("unzip")
-    zip_ver = get_version("zip")
+    # zip_ver = get_version("zip")
+    zip_ver = subprocess.getoutput("zip -v")
 
     # stop spinner
     loading = False
@@ -347,10 +421,9 @@ def get_macos_info():
 
     # Clean all versions
     resolution = resolution.replace("Resolution:", "").strip()
-    uptime_clean = parse_uptime(uptime)
     ruby_ver = clean_version(ruby_ver)
     python_ver = clean_version(python_ver)
-    swift_ver = clean_version(swift_ver)
+    swift_ver = clean_swift_version(swift_ver)
     rust_ver = clean_version(rust_ver)
     cargo_ver = clean_version(cargo_ver)
     brew_ver = clean_version(brew_ver)
@@ -364,6 +437,7 @@ def get_macos_info():
     tar_ver = clean_version(tar_ver)
     unzip_ver = clean_version(subprocess.getoutput("unzip -V"))
     zip_ver = clean_version(zip_ver)
+
 
     # print results
     print(f"{green_info}Product Name:{reset} {bold_white}{product_name}{reset}")
@@ -545,7 +619,7 @@ def get_linux_info():
     python_ver = clean_python_version(python_raw)
     swift_raw = get_version("swift")
     swift_ver = clean_swift_version(swift_raw)
-    rust_raw = get_version("rustup")
+    rust_raw = get_version("rustc")
     rust_ver = clean_rust_version(rust_raw)
     cargo_raw = get_version("cargo")
     cargo_ver = clean_cargo_version(cargo_raw)
@@ -567,7 +641,7 @@ def get_linux_info():
     tar_ver = clean_tar_version(tar_raw)
     unzip_raw = subprocess.getoutput("unzip -v")
     unzip_ver = clean_unzip_version(unzip_raw)
-    zip_raw = get_version("zip")
+    zip_raw = subprocess.getoutput("zip -v")
     zip_ver = clean_zip_version(zip_raw)
 
     loading = False
